@@ -1,9 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { AlertCircle, TrendingUp, DollarSign, Clock } from 'lucide-react';
 import './App.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
+// Sample ZIP code data (in production, would use Census API)
+const ZIP_INCOME_DATA = {
+  '78701': 65000,
+  '78702': 45000,
+  '78704': 75000,
+  '90210': 125000,
+  '10001': 85000,
+  '60601': 72000,
+  '94102': 95000,
+  '02101': 88000,
+  '33101': 62000,
+  '98101': 78000
+};
 
 function App() {
   const [formData, setFormData] = useState({
@@ -18,10 +32,10 @@ function App() {
     oop_cost: 2400,
     distance_to_pharmacy: 8.5,
     pa_required: true,
-    prior_abandonment_count: 0,
-    prescription_date: new Date().toISOString().split('T')[0]
+    prior_abandonment_count: 0
   });
 
+  const [incomeEdited, setIncomeEdited] = useState(false);
   const [prediction, setPrediction] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,7 +50,6 @@ function App() {
       setPrediction(response.data);
     } catch (err) {
       setError(err.response?.data?.detail || err.message || 'Prediction failed');
-      console.error('API Error:', err);
     } finally {
       setLoading(false);
     }
@@ -49,6 +62,51 @@ function App() {
       [name]: type === 'checkbox' ? checked : 
               type === 'number' ? parseFloat(value) : value
     }));
+  };
+
+  const handleZipChange = (e) => {
+    const zip = e.target.value;
+    setFormData(prev => ({
+      ...prev,
+      zip_code: zip
+    }));
+
+    // Auto-populate income if not manually edited
+    if (!incomeEdited && ZIP_INCOME_DATA[zip]) {
+      setFormData(prev => ({
+        ...prev,
+        median_income: ZIP_INCOME_DATA[zip]
+      }));
+    }
+  };
+
+  const handleIncomeChange = (e) => {
+    setIncomeEdited(true);
+    setFormData(prev => ({
+      ...prev,
+      median_income: parseFloat(e.target.value)
+    }));
+  };
+
+  const handleDrugChange = (e) => {
+    const drugName = e.target.value;
+    const drugMap = {
+      'Keytruda': { area: 'Oncology', cost: 12000 },
+      'Ocrevus': { area: 'Neurology', cost: 16250 },
+      'Humira': { area: 'Immunology', cost: 7000 },
+      'Xolair': { area: 'Pulmonology', cost: 3000 },
+      'Enbrel': { area: 'Rheumatology', cost: 6000 }
+    };
+    
+    const drug = drugMap[drugName];
+    if (drug) {
+      setFormData(prev => ({
+        ...prev,
+        drug_name: drugName,
+        therapeutic_area: drug.area,
+        drug_cost: drug.cost
+      }));
+    }
   };
 
   const getRiskColor = (risk) => {
@@ -110,20 +168,29 @@ function App() {
                   type="text"
                   name="zip_code"
                   value={formData.zip_code}
-                  onChange={handleChange}
+                  onChange={handleZipChange}
                   required
+                  placeholder="Enter ZIP code"
                 />
               </div>
 
               <div className="form-group">
-                <label>Median Income (zip code) *</label>
+                <label>
+                  Median Income (zip code) *
+                  {!incomeEdited && ZIP_INCOME_DATA[formData.zip_code] && (
+                    <span style={{fontSize: '12px', color: '#666', marginLeft: '8px'}}>
+                      (auto-filled, editable)
+                    </span>
+                  )}
+                </label>
                 <input
                   type="number"
                   name="median_income"
                   value={formData.median_income}
-                  onChange={handleChange}
+                  onChange={handleIncomeChange}
                   required
                   step="1000"
+                  placeholder="Enter income or use ZIP default"
                 />
               </div>
 
@@ -147,26 +214,15 @@ function App() {
                 <select
                   name="drug_name"
                   value={formData.drug_name}
-                  onChange={handleChange}
+                  onChange={handleDrugChange}
                   required
                 >
                   <option value="Keytruda">Keytruda (Oncology)</option>
-                  <option value="Ocrevus">Ocrevus (MS)</option>
+                  <option value="Ocrevus">Ocrevus (Neurology)</option>
                   <option value="Humira">Humira (Immunology)</option>
-                  <option value="Xolair">Xolair (Asthma)</option>
-                  <option value="Enbrel">Enbrel (RA)</option>
+                  <option value="Xolair">Xolair (Pulmonology)</option>
+                  <option value="Enbrel">Enbrel (Rheumatology)</option>
                 </select>
-              </div>
-
-              <div className="form-group">
-                <label>Therapeutic Area *</label>
-                <input
-                  type="text"
-                  name="therapeutic_area"
-                  value={formData.therapeutic_area}
-                  onChange={handleChange}
-                  required
-                />
               </div>
 
               <div className="form-group">
