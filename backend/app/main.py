@@ -1,3 +1,7 @@
+Cx
+
+
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -130,7 +134,2707 @@ def predict_abandonment(request: PredictionRequest):
             recommendations=recommendations
         )
         
-    except Exception as e:
+@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    """Get median income for a ZIP code"""
+    state_income = {
+        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+    }
+    
+    try:
+        zip_int = int(zip_code[:3])
+        state = None
+        
+        if 350 <= zip_int <= 369: state = 'AL'
+        elif 995 <= zip_int <= 999: state = 'AK'
+        elif 850 <= zip_int <= 865: state = 'AZ'
+        elif 716 <= zip_int <= 729: state = 'AR'
+        elif 900 <= zip_int <= 961: state = 'CA'
+        elif 800 <= zip_int <= 816: state = 'CO'
+        elif 60 <= zip_int <= 69: state = 'CT'
+        elif 197 <= zip_int <= 199: state = 'DE'
+        elif 320 <= zip_int <= 349: state = 'FL'
+        elif 300 <= zip_int <= 319: state = 'GA'
+        elif 967 <= zip_int <= 968: state = 'HI'
+        elif 832 <= zip_int <= 838: state = 'ID'
+        elif 600 <= zip_int <= 629: state = 'IL'
+        elif 460 <= zip_int <= 479: state = 'IN'
+        elif 500 <= zip_int <= 528: state = 'IA'
+        elif 660 <= zip_int <= 679: state = 'KS'
+        elif 400 <= zip_int <= 427: state = 'KY'
+        elif 700 <= zip_int <= 714: state = 'LA'
+        elif 39 <= zip_int <= 49: state = 'ME'
+        elif 206 <= zip_int <= 219: state = 'MD'
+        elif 10 <= zip_int <= 27: state = 'MA'
+        elif 480 <= zip_int <= 499: state = 'MI'
+        elif 550 <= zip_int <= 567: state = 'MN'
+        elif 386 <= zip_int <= 397: state = 'MS'
+        elif 630 <= zip_int <= 658: state = 'MO'
+        elif 590 <= zip_int <= 599: state = 'MT'
+        elif 680 <= zip_int <= 693: state = 'NE'
+        elif 889 <= zip_int <= 898: state = 'NV'
+        elif 30 <= zip_int <= 38: state = 'NH'
+        elif 70 <= zip_int <= 89: state = 'NJ'
+        elif 870 <= zip_int <= 884: state = 'NM'
+        elif (5 <= zip_int <= 9) or (100 <= zip_int <= 149): state = 'NY'
+        elif 270 <= zip_int <= 289: state = 'NC'
+        elif 580 <= zip_int <= 588: state = 'ND'
+        elif 430 <= zip_int <= 458: state = 'OH'
+        elif 730 <= zip_int <= 749: state = 'OK'
+        elif 970 <= zip_int <= 979: state = 'OR'
+        elif 150 <= zip_int <= 196: state = 'PA'
+        elif 28 <= zip_int <= 29: state = 'RI'
+        elif 290 <= zip_int <= 299: state = 'SC'
+        elif 570 <= zip_int <= 577: state = 'SD'
+        elif 370 <= zip_int <= 385: state = 'TN'
+        elif (750 <= zip_int <= 799) or (885 <= zip_int <= 888): state = 'TX'
+        elif 840 <= zip_int <= 847: state = 'UT'
+        elif 50 <= zip_int <= 59: state = 'VT'
+        elif (201 <= zip_int <= 205) or (220 <= zip_int <= 246): state = 'VA'
+        elif 980 <= zip_int <= 994: state = 'WA'
+        elif 247 <= zip_int <= 268: state = 'WV'
+        elif 530 <= zip_int <= 549: state = 'WI'
+        elif 820 <= zip_int <= 831: state = 'WY'
+        
+        if state and state in state_income:
+            return {"zip_code": zip_code, "state": state, "median_income": state_income[state]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except:
+        return {"zip_code": zip_code, "median_income": 65000}    except Exception as e:
         import traceback
         print("Error details:")
         print(traceback.format_exc())
@@ -143,6 +2847,67 @@ def health_check():
         "model_loaded": predictor.model is not None,
         "recommender_loaded": recommender is not None
     }
+
+
+@app.get("/zip-income/{zip_code}")
+def get_zip_income(zip_code: str):
+    state_income = {'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672, 'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980, 'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691, 'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738, 'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409, 'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751, 'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642, 'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227, 'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001, 'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003}
+    try:
+        z = int(zip_code[:3])
+        s = None
+        if 350 <= z <= 369: s = 'AL'
+        elif 995 <= z <= 999: s = 'AK'
+        elif 850 <= z <= 865: s = 'AZ'
+        elif 716 <= z <= 729: s = 'AR'
+        elif 900 <= z <= 961: s = 'CA'
+        elif 800 <= z <= 816: s = 'CO'
+        elif 60 <= z <= 69: s = 'CT'
+        elif 197 <= z <= 199: s = 'DE'
+        elif 320 <= z <= 349: s = 'FL'
+        elif 300 <= z <= 319: s = 'GA'
+        elif 967 <= z <= 968: s = 'HI'
+        elif 832 <= z <= 838: s = 'ID'
+        elif 600 <= z <= 629: s = 'IL'
+        elif 460 <= z <= 479: s = 'IN'
+        elif 500 <= z <= 528: s = 'IA'
+        elif 660 <= z <= 679: s = 'KS'
+        elif 400 <= z <= 427: s = 'KY'
+        elif 700 <= z <= 714: s = 'LA'
+        elif 39 <= z <= 49: s = 'ME'
+        elif 206 <= z <= 219: s = 'MD'
+        elif 10 <= z <= 27: s = 'MA'
+        elif 480 <= z <= 499: s = 'MI'
+        elif 550 <= z <= 567: s = 'MN'
+        elif 386 <= z <= 397: s = 'MS'
+        elif 630 <= z <= 658: s = 'MO'
+        elif 590 <= z <= 599: s = 'MT'
+        elif 680 <= z <= 693: s = 'NE'
+        elif 889 <= z <= 898: s = 'NV'
+        elif 30 <= z <= 38: s = 'NH'
+        elif 70 <= z <= 89: s = 'NJ'
+        elif 870 <= z <= 884: s = 'NM'
+        elif (5 <= z <= 9) or (100 <= z <= 149): s = 'NY'
+        elif 270 <= z <= 289: s = 'NC'
+        elif 580 <= z <= 588: s = 'ND'
+        elif 430 <= z <= 458: s = 'OH'
+        elif 730 <= z <= 749: s = 'OK'
+        elif 970 <= z <= 979: s = 'OR'
+        elif 150 <= z <= 196: s = 'PA'
+        elif 28 <= z <= 29: s = 'RI'
+        elif 290 <= z <= 299: s = 'SC'
+        elif 570 <= z <= 577: s = 'SD'
+        elif 370 <= z <= 385: s = 'TN'
+        elif (750 <= z <= 799) or (885 <= z <= 888): s = 'TX'
+        elif 840 <= z <= 847: s = 'UT'
+        elif 50 <= z <= 59: s = 'VT'
+        elif (201 <= z <= 205) or (220 <= z <= 246): s = 'VA'
+        elif 980 <= z <= 994: s = 'WA'
+        elif 247 <= z <= 268: s = 'WV'
+        elif 530 <= z <= 549: s = 'WI'
+        elif 820 <= z <= 831: s = 'WY'
+        if s and s in state_income: return {"zip_code": zip_code, "state": s, "median_income": state_income[s]}
+        return {"zip_code": zip_code, "median_income": 65000}
+    except: return {"zip_code": zip_code, "median_income": 65000}
 
 if __name__ == "__main__":
     import uvicorn
