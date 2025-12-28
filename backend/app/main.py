@@ -5,7 +5,6 @@ from typing import List, Optional
 import sys
 import os
 
-# Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from train_model import AbandonmentPredictor
@@ -17,19 +16,20 @@ app = FastAPI(
     version="0.1.0"
 )
 
-# CORS middleware
+# More permissive CORS for mobile
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=False,  # Change to False for wildcard origins
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
 
-# Load model - use correct path for Docker container
+# Load model
 model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'models', 'abandonment_model.joblib')
-print(f"Loading model from: {model_path}")
-print(f"File exists: {os.path.exists(model_path)}")
+print("Loading model from: {}".format(model_path))
+print("File exists: {}".format(os.path.exists(model_path)))
 predictor = AbandonmentPredictor.load(model_path)
 recommender = InterventionRecommender()
 
