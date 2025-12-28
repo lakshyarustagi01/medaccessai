@@ -11,6 +11,8 @@ from sklearn.metrics import (
     roc_curve
 )
 import joblib
+import matplotlib
+matplotlib.use('Agg')  # Use non-interactive backend
 import matplotlib.pyplot as plt
 import json
 import os
@@ -21,7 +23,7 @@ class AbandonmentPredictor:
         self.scaler = StandardScaler()
         self.label_encoders = {}
         self.feature_names = None
-        self.income_bins = None  # Store the bins from training
+        self.income_bins = None
         
     def engineer_features(self, df):
         """Create derived features"""
@@ -35,17 +37,14 @@ class AbandonmentPredictor:
         # Income-based features
         df['is_low_income'] = (df['median_income'] < 50000).astype(int)
         
-        # Use cut instead of qcut to avoid duplicate edge errors
-        # Define fixed income brackets
+        # Use fixed bins instead of qcut
         if self.income_bins is None:
-            # Training: create bins based on data
             df['income_percentile'] = pd.cut(
                 df['median_income'], 
                 bins=[0, 40000, 60000, 80000, float('inf')], 
                 labels=[1, 2, 3, 4]
             )
         else:
-            # Prediction: use same bins as training
             df['income_percentile'] = pd.cut(
                 df['median_income'],
                 bins=self.income_bins,
@@ -123,7 +122,6 @@ class AbandonmentPredictor:
         if fit:
             X_final[numeric_to_scale] = self.scaler.fit_transform(X_final[numeric_to_scale])
             self.feature_names = feature_cols
-            # Store income bins for future predictions
             self.income_bins = [0, 40000, 60000, 80000, float('inf')]
         else:
             X_final[numeric_to_scale] = self.scaler.transform(X_final[numeric_to_scale])
@@ -141,9 +139,9 @@ class AbandonmentPredictor:
             X, y, test_size=0.2, random_state=42, stratify=y
         )
         
-        print(f"Training set: {len(X_train)} samples")
-        print(f"Test set: {len(X_test)} samples")
-        print(f"Abandonment rate - Train: {y_train.mean():.2%}, Test: {y_test.mean():.2%}")
+        print("Training set: {} samples".format(len(X_train)))
+        print("Test set: {} samples".format(len(X_test)))
+        print("Abandonment rate - Train: {:.2%}, Test: {:.2%}".format(y_train.mean(), y_test.mean()))
         
         # Train XGBoost model
         print("\nTraining XGBoost model...")
@@ -165,7 +163,7 @@ class AbandonmentPredictor:
         y_pred_proba = self.model.predict_proba(X_test)[:, 1]
         
         auc = roc_auc_score(y_test, y_pred_proba)
-        print(f"AUC-ROC: {auc:.3f}")
+        print("AUC-ROC: {:.3f}".format(auc))
         
         print("\nClassification Report:")
         print(classification_report(y_test, y_pred, target_names=['Filled', 'Abandoned']))
@@ -173,8 +171,6 @@ class AbandonmentPredictor:
         print("\nConfusion Matrix:")
         cm = confusion_matrix(y_test, y_pred)
         print(cm)
-        print(f"True Negatives: {cm[0,0]}, False Positives: {cm[0,1]}")
-        print(f"False Negatives: {cm[1,0]}, True Positives: {cm[1,1]}")
         
         # Feature importance
         feature_importance = pd.DataFrame({
@@ -188,13 +184,7 @@ class AbandonmentPredictor:
         # Cross-validation
         print("\nCross-validation scores:")
         cv_scores = cross_val_score(self.model, X, y, cv=5, scoring='roc_auc')
-        print(f"CV AUC: {cv_scores.mean():.3f} (+/- {cv_scores.std():.3f})")
-        
-        # Plot ROC curve
-        self._plot_roc_curve(y_test, y_pred_proba)
-        
-        # Plot feature importance
-        self._plot_feature_importance(feature_importance)
+        print("CV AUC: {:.3f} (+/- {:.3f})".format(cv_scores.mean(), cv_scores.std()))
         
         return {
             'auc': auc,
@@ -209,39 +199,9 @@ class AbandonmentPredictor:
         probabilities = self.model.predict_proba(X)[:, 1]
         return probabilities
     
-    def _plot_roc_curve(self, y_true, y_pred_proba):
-        """Plot ROC curve"""
-        fpr, tpr, _ = roc_curve(y_true, y_pred_proba)
-        auc = roc_auc_score(y_true, y_pred_proba)
-        
-        plt.figure(figsize=(8, 6))
-        plt.plot(fpr, tpr, label=f'ROC curve (AUC = {auc:.3f})', linewidth=2)
-        plt.plot([0, 1], [0, 1], 'k--', label='Random classifier')
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.title('ROC Curve - Abandonment Prediction')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.savefig('backend/models/roc_curve.png', dpi=150)
-        print("\n✅ ROC curve saved to backend/models/roc_curve.png")
-        plt.close()
-    
-    def _plot_feature_importance(self, feature_importance):
-        """Plot feature importance"""
-        plt.figure(figsize=(10, 6))
-        top_features = feature_importance.head(15)
-        plt.barh(range(len(top_features)), top_features['importance'])
-        plt.yticks(range(len(top_features)), top_features['feature'])
-        plt.xlabel('Importance')
-        plt.title('Top 15 Feature Importances')
-        plt.tight_layout()
-        plt.savefig('backend/models/feature_importance.png', dpi=150)
-        print("✅ Feature importance plot saved to backend/models/feature_importance.png")
-        plt.close()
-    
-    def save(self, path='backend/models/abandonment_model.joblib'):
+    def save(self, path='models/abandonment_model.joblib'):
         """Save model and preprocessing objects"""
+        os.makedirs(os.path.dirname(path), exist_ok=True)
         joblib.dump({
             'model': self.model,
             'scaler': self.scaler,
@@ -249,10 +209,10 @@ class AbandonmentPredictor:
             'feature_names': self.feature_names,
             'income_bins': self.income_bins
         }, path)
-        print(f"\n✅ Model saved to {path}")
+        print("\nModel saved to {}".format(path))
     
     @classmethod
-    def load(cls, path='backend/models/abandonment_model.joblib'):
+    def load(cls, path='models/abandonment_model.joblib'):
         """Load saved model"""
         predictor = cls()
         saved_objects = joblib.load(path)
@@ -267,28 +227,17 @@ class AbandonmentPredictor:
 if __name__ == '__main__':
     # Load data
     print("Loading data...")
-    df = pd.read_csv('backend/data/synthetic_patients.csv')
+    df = pd.read_csv('data/synthetic_patients.csv')
     
     # Train model
     predictor = AbandonmentPredictor()
     metrics = predictor.train(df)
     
     # Save model
-    os.makedirs('backend/models', exist_ok=True)
     predictor.save()
     
-    # Save metrics
-    with open('backend/models/metrics.json', 'w') as f:
-        json.dump({
-            'auc': metrics['auc'],
-            'cv_auc_mean': metrics['cv_auc_mean'],
-            'cv_auc_std': metrics['cv_auc_std']
-        }, f, indent=2)
-    
     print("\n" + "="*50)
-    print("✅ TRAINING COMPLETE!")
+    print("TRAINING COMPLETE!")
     print("="*50)
-    print(f"Model AUC: {metrics['auc']:.3f}")
-    print(f"CV AUC: {metrics['cv_auc_mean']:.3f} (+/- {metrics['cv_auc_std']:.3f})")
-    print("\nModel saved to: backend/models/abandonment_model.joblib")
-    print("Plots saved to: backend/models/")
+    print("Model AUC: {:.3f}".format(metrics['auc']))
+    print("CV AUC: {:.3f} (+/- {:.3f})".format(metrics['cv_auc_mean'], metrics['cv_auc_std']))
