@@ -3,7 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import List, Optional
 import sys
-sys.path.append('..')
+import os
+
+# Add parent directory to path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from train_model import AbandonmentPredictor
 from recommendations import InterventionRecommender
 
@@ -22,8 +26,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load model and recommender
-predictor = AbandonmentPredictor.load('../models/abandonment_model.joblib')
+# Load model - use correct path for Docker container
+model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'models', 'abandonment_model.joblib')
+print(f"Loading model from: {model_path}")
+print(f"File exists: {os.path.exists(model_path)}")
+predictor = AbandonmentPredictor.load(model_path)
 recommender = InterventionRecommender()
 
 # Request/Response models
@@ -61,7 +68,6 @@ class PredictionResponse(BaseModel):
     risk_factors: List[str]
     recommendations: List[Intervention]
 
-# API Endpoints
 @app.get("/")
 def root():
     return {
@@ -74,12 +80,10 @@ def root():
 def predict_abandonment(request: PredictionRequest):
     try:
         import pandas as pd
-        patient_df = pd.DataFrame([request.dict()])
+        patient_df = pd.DataFrame([request.model_dump()])
         
-        # Get prediction
         abandonment_prob = predictor.predict(patient_df)[0]
         
-        # Determine risk level
         if abandonment_prob < 0.3:
             risk_level = "LOW"
         elif abandonment_prob < 0.5:
@@ -89,15 +93,14 @@ def predict_abandonment(request: PredictionRequest):
         else:
             risk_level = "CRITICAL"
         
-        # Identify risk factors
         risk_factors = []
         
         if request.oop_cost > 1000:
-            risk_factors.append(f"High out-of-pocket cost (${request.oop_cost:,.0f})")
+            risk_factors.append("High out-of-pocket cost (${:,.0f})".format(request.oop_cost))
         
         oop_to_income_ratio = (request.oop_cost / (request.median_income / 12))
         if oop_to_income_ratio > 0.3:
-            risk_factors.append(f"OOP-to-income ratio exceeds 30% ({oop_to_income_ratio:.0%})")
+            risk_factors.append("OOP-to-income ratio exceeds 30% ({:.0%})".format(oop_to_income_ratio))
         
         if request.insurance_type == "Uninsured":
             risk_factors.append("Patient is uninsured")
@@ -106,17 +109,16 @@ def predict_abandonment(request: PredictionRequest):
             risk_factors.append("Prior authorization required")
         
         if request.distance_to_pharmacy > 20:
-            risk_factors.append(f"Far from specialty pharmacy ({request.distance_to_pharmacy:.1f} miles)")
+            risk_factors.append("Far from specialty pharmacy ({:.1f} miles)".format(request.distance_to_pharmacy))
         
         if request.prior_abandonment_count > 0:
-            risk_factors.append(f"History of abandonment ({request.prior_abandonment_count} prior)")
+            risk_factors.append("History of abandonment ({} prior)".format(request.prior_abandonment_count))
         
         if request.median_income < 50000:
-            risk_factors.append(f"Low-income area (${request.median_income:,.0f} median)")
+            risk_factors.append("Low-income area (${:,.0f} median)".format(request.median_income))
         
-        # Get recommendations
         recommendations = recommender.recommend(
-            request.dict(),
+            request.model_dump(),
             abandonment_prob
         )
         
@@ -129,7 +131,10 @@ def predict_abandonment(request: PredictionRequest):
         )
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
+        import traceback
+        print("Error details:")
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail="Prediction failed: {}".format(str(e)))
 
 @app.get("/health")
 def health_check():
