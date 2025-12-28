@@ -46,6 +46,18 @@ class PredictionRequest(BaseModel):
     pa_required: bool
     prior_abandonment_count: int = Field(0, ge=0)
     prescription_date: Optional[str] = None
+    
+    # NEW FIELDS
+    deductible_met: bool = False
+    deductible_remaining: float = Field(0, ge=0)
+    prescription_month: int = Field(..., ge=1, le=12)
+    is_refill: bool = False
+    days_since_prescription: int = Field(0, ge=0)
+    administration_route: str = 'oral'
+    specialty_pharmacy_required: bool = True
+    lives_alone: bool = False
+    primary_language: str = 'English'
+    has_caregiver: bool = False
 
 class Intervention(BaseModel):
     intervention_id: str
@@ -115,6 +127,28 @@ def predict_abandonment(request: PredictionRequest):
         if request.median_income < 50000:
             risk_factors.append("Low-income area (${:,.0f} median)".format(request.median_income))
         
+        # NEW RISK FACTORS
+        if not request.deductible_met and request.deductible_remaining > 2000:
+            risk_factors.append("Deductible not met (${:,.0f} remaining)".format(request.deductible_remaining))
+        
+        if request.prescription_month in [1, 2]:
+            risk_factors.append("Prescription in January/February (deductible reset period)")
+        
+        if not request.is_refill:
+            risk_factors.append("New prescription (patient unfamiliar with medication)")
+        
+        if request.days_since_prescription > 7:
+            risk_factors.append("Prescription aging ({} days old - urgency decreasing)".format(request.days_since_prescription))
+        
+        if request.administration_route == 'infusion':
+            risk_factors.append("Complex administration (requires infusion)")
+        
+        if request.lives_alone and not request.has_caregiver:
+            risk_factors.append("Lives alone with no caregiver support")
+        
+        if request.primary_language != 'English':
+            risk_factors.append("Potential language barrier ({})".format(request.primary_language))
+        
         recommendations = recommender.recommend(
             request.model_dump(),
             abandonment_prob
@@ -146,7 +180,6 @@ def health_check():
 def get_zip_income(zip_code: str):
     """Get median household income for ZIP code using Census API"""
     try:
-        # Try Census API first
         url = f"https://api.census.gov/data/2021/acs/acs5?get=NAME,B19013_001E&for=zip%20code%20tabulation%20area:{zip_code}"
         response = requests.get(url, timeout=5)
         
@@ -157,7 +190,6 @@ def get_zip_income(zip_code: str):
                 if income and income != '-666666666':
                     return {"zip_code": zip_code, "median_income": int(income), "source": "Census 2021"}
         
-        # Fallback to state estimates
         state_income = {
             'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
             'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
