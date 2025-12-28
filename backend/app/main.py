@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 import sys
 import os
+import requests
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -143,23 +144,35 @@ def health_check():
 
 @app.get("/zip-income/{zip_code}")
 def get_zip_income(zip_code: str):
-    state_income = {
-        'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
-        'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
-        'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
-        'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
-        'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
-        'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
-        'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
-        'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
-        'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
-        'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
-    }
-    
+    """Get median household income for ZIP code using Census API"""
     try:
+        # Try Census API first
+        url = f"https://api.census.gov/data/2021/acs/acs5?get=NAME,B19013_001E&for=zip%20code%20tabulation%20area:{zip_code}"
+        response = requests.get(url, timeout=5)
+        
+        if response.status_code == 200:
+            data = response.json()
+            if len(data) > 1:
+                income = data[1][1]
+                if income and income != '-666666666':
+                    return {"zip_code": zip_code, "median_income": int(income), "source": "Census 2021"}
+        
+        # Fallback to state estimates
+        state_income = {
+            'AL': 52035, 'AK': 77640, 'AZ': 62055, 'AR': 49475, 'CA': 78672,
+            'CO': 77127, 'CT': 78833, 'DE': 70176, 'FL': 59227, 'GA': 61980,
+            'HI': 83102, 'ID': 60999, 'IL': 68428, 'IN': 57603, 'IA': 61691,
+            'KS': 61091, 'KY': 52295, 'LA': 51073, 'ME': 59489, 'MD': 86738,
+            'MA': 84385, 'MI': 59584, 'MN': 74593, 'MS': 46511, 'MO': 57409,
+            'MT': 57153, 'NE': 63229, 'NV': 63276, 'NH': 81160, 'NJ': 85751,
+            'NM': 51945, 'NY': 72108, 'NC': 57341, 'ND': 65315, 'OH': 58642,
+            'OK': 54449, 'OR': 67058, 'PA': 63463, 'RI': 71169, 'SC': 56227,
+            'SD': 59533, 'TN': 56071, 'TX': 64034, 'UT': 75780, 'VT': 63001,
+            'VA': 76456, 'WA': 78687, 'WV': 48850, 'WI': 64168, 'WY': 65003
+        }
+        
         z = int(zip_code[:3])
         s = None
-        
         if 350 <= z <= 369: s = 'AL'
         elif 995 <= z <= 999: s = 'AK'
         elif 850 <= z <= 865: s = 'AZ'
@@ -212,10 +225,10 @@ def get_zip_income(zip_code: str):
         elif 820 <= z <= 831: s = 'WY'
         
         if s and s in state_income:
-            return {"zip_code": zip_code, "state": s, "median_income": state_income[s]}
-        return {"zip_code": zip_code, "median_income": 65000}
+            return {"zip_code": zip_code, "state": s, "median_income": state_income[s], "source": "State estimate"}
+        return {"zip_code": zip_code, "median_income": 65000, "source": "default"}
     except:
-        return {"zip_code": zip_code, "median_income": 65000}
+        return {"zip_code": zip_code, "median_income": 65000, "source": "default"}
 
 if __name__ == "__main__":
     import uvicorn
