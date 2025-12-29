@@ -12,9 +12,9 @@ from train_model import AbandonmentPredictor
 from recommendations import InterventionRecommender
 
 app = FastAPI(
-    title="MedAccessAI API",
+    title="MedEasy",
     description="Medication Abandonment Prediction & Intervention Recommendation API",
-    version="0.1.0"
+    version="1.0.0"
 )
 
 app.add_middleware(
@@ -82,8 +82,8 @@ class PredictionResponse(BaseModel):
 def root():
     return {
         "status": "healthy",
-        "service": "MedAccessAI API",
-        "version": "0.1.0"
+        "service": "MedEasy",
+        "version": "1.0.0"
     }
 
 @app.post("/predict", response_model=PredictionResponse)
