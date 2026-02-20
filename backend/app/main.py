@@ -94,14 +94,14 @@ def predict_abandonment(request: PredictionRequest):
         
         abandonment_prob = predictor.predict(patient_df)[0]
         
-        if abandonment_prob < 0.3:
-            risk_level = "LOW"
-        elif abandonment_prob < 0.5:
-            risk_level = "MEDIUM"
-        elif abandonment_prob < 0.75:
-            risk_level = "HIGH"
-        else:
-            risk_level = "CRITICAL"
+        if abandonment_prob < 0.50:
+        risk_level = "LOW"
+    elif abandonment_prob < 0.70:
+        risk_level = "MEDIUM"
+    elif abandonment_prob < 0.85:
+        risk_level = "HIGH"
+    else:
+        risk_level = "CRITICAL"
         
         risk_factors = []
         
